@@ -2,15 +2,16 @@ FROM searxng/searxng:latest
 
 USER root
 
-# Install redis and supervisor using Debian's package manager (apt-get)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends redis-server supervisor && \
-    rm -rf /var/lib/apt/lists/*
+# 1. Dummy fix to keep SnapDeploy's automated proxy injector happy
+RUN mkdir -p /etc/apt/apt.conf.d/
 
-# Copy configuration files
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# 2. Install redis and supervisor using Alpine's native package manager (apk)
+RUN apk add --no-cache redis supervisor
+
+# 3. Copy configuration files
+COPY supervisord.conf /etc/supervisord.conf
 COPY searxng/settings.yml /etc/searxng/settings.yml
 
 EXPOSE 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
