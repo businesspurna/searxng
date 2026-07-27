@@ -1,0 +1,24 @@
+use_default_settings: true
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "CHANGE_THIS_TO_A_VERY_LONG_RANDOM_SECRET_KEY"
+  limiter: false
+
+search:
+  safe_search: 0
+  formats:
+    - html
+    - json
+
+engines:
+  - name: google
+    engine: google
+    weight: 2
+  - name: duckduckgo
+    engine: duckduckgo
+    weight: 1
+  - name: bing
+    engine: bing
+    weight: 1
