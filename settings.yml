@@ -3,7 +3,7 @@ use_default_settings: true
 server:
   port: 8080
   bind_address: "0.0.0.0"
-  secret_key: "CHANGE_THIS_TO_A_VERY_LONG_RANDOM_SECRET_KEY"
+  secret_key: "purnaps"
   limiter: false
 
 search:
