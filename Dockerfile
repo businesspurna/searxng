@@ -1,12 +1,16 @@
 FROM searxng/searxng:latest
 
-# Install redis and supervisor inside the container
-RUN apk add --no-cache redis supervisor
+USER root
 
-# Copy configurations
-COPY supervisord.conf /etc/supervisord.conf
+# Install redis and supervisor using Debian's package manager (apt-get)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends redis-server supervisor && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy configuration files
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY searxng/settings.yml /etc/searxng/settings.yml
 
 EXPOSE 8080
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
